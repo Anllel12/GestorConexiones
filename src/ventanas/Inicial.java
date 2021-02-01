@@ -7,6 +7,8 @@ package ventanas;
 
 import codigo.Conexion;
 import java.sql.Date;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 
 /**
@@ -16,6 +18,11 @@ import java.sql.Date;
 public class Inicial extends javax.swing.JFrame {
     
     Conexion conexion = new Conexion();
+    
+    int row; // me devuelve la fila pinchada
+    int col;
+    String edit; // valor que edito
+    String column;
 
     /*
      * Creates new form Inicial
@@ -23,6 +30,8 @@ public class Inicial extends javax.swing.JFrame {
     public Inicial() {
         initComponents();
         conexion.conectar();
+        conexion.tableSong(jTableCanciones);
+        conexion.tableAlbum(jTableAlbunes);
     }
 
     /**
@@ -36,9 +45,14 @@ public class Inicial extends javax.swing.JFrame {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jInternalFrame1 = new javax.swing.JInternalFrame();
-        jButtonConectar = new javax.swing.JButton();
-        jButtonDesconectar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableAlbunes = new javax.swing.JTable();
+        jButtonActualizarAlbum = new javax.swing.JButton();
+        jButtonAñadirAlbum = new javax.swing.JButton();
+        jButtonEliminarAlbum = new javax.swing.JButton();
         jInternalFrame3 = new javax.swing.JInternalFrame();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTableCanciones = new javax.swing.JTable();
         jInternalFrame2 = new javax.swing.JInternalFrame();
         jTextId = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -54,54 +68,81 @@ public class Inicial extends javax.swing.JFrame {
 
         jInternalFrame1.setVisible(true);
 
-        jButtonConectar.setText("Conectar a la Base de Datos");
-        jButtonConectar.addActionListener(new java.awt.event.ActionListener() {
+        jTableAlbunes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Titulo", "Autor", "Fecha Lanzamineto"
+            }
+        ));
+        jTableAlbunes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableAlbunesMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTableAlbunes);
+
+        jButtonActualizarAlbum.setText("Actualizar");
+        jButtonActualizarAlbum.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonConectarActionPerformed(evt);
+                jButtonActualizarAlbumActionPerformed(evt);
             }
         });
 
-        jButtonDesconectar.setText("Desconectar de la Base de Datos");
-        jButtonDesconectar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonDesconectarActionPerformed(evt);
-            }
-        });
+        jButtonAñadirAlbum.setText("Añadir");
+
+        jButtonEliminarAlbum.setText("Eliminar");
 
         javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
         jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
         jInternalFrame1Layout.setHorizontalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
             .addGroup(jInternalFrame1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButtonConectar)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonDesconectar)
-                .addContainerGap(96, Short.MAX_VALUE))
+                .addComponent(jButtonEliminarAlbum)
+                .addGap(49, 49, 49)
+                .addComponent(jButtonActualizarAlbum)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonAñadirAlbum)
+                .addContainerGap())
         );
         jInternalFrame1Layout.setVerticalGroup(
             jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonConectar)
-                    .addComponent(jButtonDesconectar))
-                .addContainerGap(350, Short.MAX_VALUE))
+                    .addComponent(jButtonActualizarAlbum, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonAñadirAlbum, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonEliminarAlbum, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Albunes", jInternalFrame1);
 
         jInternalFrame3.setVisible(true);
 
+        jTableCanciones.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Titulo", "Autor", "Album"
+            }
+        ));
+        jScrollPane2.setViewportView(jTableCanciones);
+
         javax.swing.GroupLayout jInternalFrame3Layout = new javax.swing.GroupLayout(jInternalFrame3.getContentPane());
         jInternalFrame3.getContentPane().setLayout(jInternalFrame3Layout);
         jInternalFrame3Layout.setHorizontalGroup(
             jInternalFrame3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
         );
         jInternalFrame3Layout.setVerticalGroup(
             jInternalFrame3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Canciones", jInternalFrame3);
@@ -212,24 +253,47 @@ public class Inicial extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConectarActionPerformed
-        conexion.conectar();
-    }//GEN-LAST:event_jButtonConectarActionPerformed
-
-    private void jButtonDesconectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDesconectarActionPerformed
-        conexion.desconectar();
-    }//GEN-LAST:event_jButtonDesconectarActionPerformed
-
     private void jButtonAñadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAñadirActionPerformed
         if (jComboBox.getSelectedItem().equals("Album")) { // Comprueba cual de los dos elementos es el seleccionado
-            conexion.addSong(Integer.parseInt(jTextId.getText()), jTextTitulo.getText(), jTextAutor.getText(), Integer.parseInt(jTextCombo.getText()));           
+            conexion.addSong(Integer.parseInt(jTextId.getText()), jTextTitulo.getText(), jTextAutor.getText(), Integer.parseInt(jTextCombo.getText()));        
         }
         else{
-            conexion.addAlbum(Integer.parseInt(jTextId.getText()), jTextTitulo.getText(), jTextAutor.getText(), Date.valueOf(jTextCombo.getText()));
+            conexion.addAlbum(Integer.parseInt(jTextId.getText()), jTextTitulo.getText(), jTextAutor.getText(), jTextCombo.getText());
         }
-
+        
+        updateTableAlbum();
+        updateTableSong();  
     }//GEN-LAST:event_jButtonAñadirActionPerformed
 
+    private void jButtonActualizarAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizarAlbumActionPerformed
+        conexion.updateAlbum(row, col, edit, column);
+    }//GEN-LAST:event_jButtonActualizarAlbumActionPerformed
+
+    private void jTableAlbunesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableAlbunesMouseClicked
+        JTable source = (JTable) evt.getSource();
+        row = source.rowAtPoint(evt.getPoint()); // me devuelve la fila pinchada
+        col = source.columnAtPoint(evt.getPoint());
+        edit = (String) source.getModel().getValueAt(row, col); // valor que edito      
+        column = (String) source.getModel().getValueAt(0, col); // columna que edito   
+        System.out.println(row);
+        System.out.println(col);
+        System.out.println(edit);
+        System.out.println(column);
+    }//GEN-LAST:event_jTableAlbunesMouseClicked
+
+    public void updateTableAlbum(){ // actualizo la tabla
+        while(jTableAlbunes.getRowCount() != 0) ((DefaultTableModel)jTableAlbunes.getModel()).removeRow(0);
+        
+        conexion.tableAlbum(jTableAlbunes);
+    }
+
+    public void updateTableSong(){
+        while(jTableCanciones.getRowCount() != 0) ((DefaultTableModel)jTableCanciones.getModel()).removeRow(0);
+        
+        conexion.tableSong(jTableCanciones);
+    }
+
+    
     /**
      * @param args the command line arguments
      */
@@ -266,9 +330,10 @@ public class Inicial extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonActualizarAlbum;
     private javax.swing.JButton jButtonAñadir;
-    private javax.swing.JButton jButtonConectar;
-    private javax.swing.JButton jButtonDesconectar;
+    private javax.swing.JButton jButtonAñadirAlbum;
+    private javax.swing.JButton jButtonEliminarAlbum;
     private javax.swing.JComboBox<String> jComboBox;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JInternalFrame jInternalFrame2;
@@ -276,7 +341,11 @@ public class Inicial extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
+    public javax.swing.JTable jTableAlbunes;
+    public javax.swing.JTable jTableCanciones;
     private javax.swing.JTextField jTextAutor;
     private javax.swing.JTextField jTextCombo;
     private javax.swing.JTextField jTextId;

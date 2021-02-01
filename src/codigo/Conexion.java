@@ -9,9 +9,13 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -19,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class Conexion {
     
-    Connection con;
+    Connection con;  
 
     public void conectar() {
 
@@ -67,12 +71,12 @@ public class Conexion {
             stmt.executeUpdate();  // Añade el usuario.
             stmt.close();
         }
-        catch (Exception ex){
+        catch (SQLException ex){
             System.out.println(ex.toString());
         }
     }
     
-    public void addAlbum(int id, String titulo, String autor, Date fecha){  // Añade Albunes.
+    public void addAlbum(int id, String titulo, String autor, String fecha){  // Añade Albunes.
         String query = "INSERT INTO album(id,titulo,autor,fecha_lanzamiento) VALUES (?, ?, ?, ?);";
         
         try{
@@ -80,7 +84,7 @@ public class Conexion {
             stmt.setInt(1, id);
             stmt.setString(2, titulo);
             stmt.setString(3, autor);
-            stmt.setDate(4, fecha);
+            stmt.setString(4, fecha);
             
             stmt.executeUpdate();  // Añade el usuario.
             stmt.close();
@@ -88,5 +92,62 @@ public class Conexion {
         catch (SQLException ex){
             System.out.println(ex.toString());
         }
+    }
+    
+    public void updateAlbum(int row, int col, String value, String column){
+         String query = "UPDATE album SET(? = ?)";
+        
+        try{
+            PreparedStatement stmt = con.prepareStatement(query);
+            switch(col){
+                case 0:  stmt.setString(1, column); stmt.setInt(2, Integer.parseInt(value)); break;
+                case 1:  stmt.setString(1, column); stmt.setString(2, value); break;
+                case 2:  stmt.setString(1, column); stmt.setString(2, value); break;
+                case 3:  stmt.setString(1, column); stmt.setString(2, value); break;
+            }        
+            
+            stmt.executeUpdate();  // Añade el usuario.
+            stmt.close();
+        }
+        catch (SQLException ex){
+            System.out.println(ex.toString());
+        }
+    }
+    
+    public void tableSong (JTable table){
+        String query = "SELECT * FROM cancion;";
+        
+        try{
+            Statement stmt = con.createStatement();
+            
+            ResultSet rs = stmt.executeQuery(query);
+            
+            while (rs.next()) {
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                model.addRow(new Object[]{rs.getInt("id"), rs.getString("titulo"), rs.getString("autor"), rs.getInt("album")});                
+            }
+        }
+        catch(SQLException ex){
+            System.out.println(ex.toString());
+        }        
+    }
+    
+     public void tableAlbum (JTable table){
+        String query = "SELECT * FROM album;";
+        
+        try{
+            Statement stmt = con.createStatement();
+            
+            ResultSet rs = stmt.executeQuery(query);
+            
+            while (rs.next()) {
+                
+                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                model.addRow(new Object[]{rs.getInt("id"), rs.getString("titulo"), rs.getString("autor"), rs.getString("fecha_lanzamiento")});                
+            }
+        }
+        catch(SQLException ex){
+            System.out.println(ex.toString());
+        }        
     }
 }
