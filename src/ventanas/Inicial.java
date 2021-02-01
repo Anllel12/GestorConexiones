@@ -19,10 +19,10 @@ public class Inicial extends javax.swing.JFrame {
     
     Conexion conexion = new Conexion();
     
-    int row; // me devuelve la fila pinchada
-    int col;
+    int row; // fila pinchada con el raton
+    int col; // columna pinchada con el raton
     String edit; // valor que edito
-    String column;
+    String column; // columna que edito
 
     /*
      * Creates new form Inicial
@@ -30,7 +30,7 @@ public class Inicial extends javax.swing.JFrame {
     public Inicial() {
         initComponents();
         conexion.conectar();
-        conexion.tableSong(jTableCanciones);
+        conexion.tableSong(jTableCanciones); // pongo los valores de la BBDD en las tablas
         conexion.tableAlbum(jTableAlbunes);
     }
 
@@ -255,18 +255,18 @@ public class Inicial extends javax.swing.JFrame {
 
     private void jButtonAñadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAñadirActionPerformed
         if (jComboBox.getSelectedItem().equals("Album")) { // Comprueba cual de los dos elementos es el seleccionado
-            conexion.addSong(Integer.parseInt(jTextId.getText()), jTextTitulo.getText(), jTextAutor.getText(), Integer.parseInt(jTextCombo.getText()));        
+            conexion.addSong(Integer.parseInt(jTextId.getText()), jTextTitulo.getText(), jTextAutor.getText(), Integer.parseInt(jTextCombo.getText())); // paso los valores a la funcion    
         }
         else{
             conexion.addAlbum(Integer.parseInt(jTextId.getText()), jTextTitulo.getText(), jTextAutor.getText(), jTextCombo.getText());
         }
         
-        updateTableAlbum();
+        updateTableAlbum(); // actualizo los valores de la tabla
         updateTableSong();  
     }//GEN-LAST:event_jButtonAñadirActionPerformed
 
     private void jButtonActualizarAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizarAlbumActionPerformed
-        conexion.updateAlbum(row, col, edit, column);
+        conexion.updateAlbum(row, col, edit, column); // paso los valores a la otra funcion
     }//GEN-LAST:event_jButtonActualizarAlbumActionPerformed
 
     private void jTableAlbunesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableAlbunesMouseClicked
@@ -282,7 +282,7 @@ public class Inicial extends javax.swing.JFrame {
     }//GEN-LAST:event_jTableAlbunesMouseClicked
 
     public void updateTableAlbum(){ // actualizo la tabla
-        while(jTableAlbunes.getRowCount() != 0) ((DefaultTableModel)jTableAlbunes.getModel()).removeRow(0);
+        while(jTableAlbunes.getRowCount() != 0) ((DefaultTableModel)jTableAlbunes.getModel()).removeRow(0); // consigue el total de columnas y las elimina
         
         conexion.tableAlbum(jTableAlbunes);
     }

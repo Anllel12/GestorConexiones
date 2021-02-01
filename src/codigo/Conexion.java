@@ -54,7 +54,7 @@ public class Conexion {
         }
     }
     
-    public void addSong(int id, String titulo, String autor, int album){  // Añade Canciones.
+    public void addSong(int id, String titulo, String autor, int album){  // añade Canciones.
         String query = "INSERT INTO cancion(id,titulo,autor,album) VALUES (?, ?, ?, ?);";
         System.out.println(id);
         System.out.println(titulo);
@@ -68,7 +68,7 @@ public class Conexion {
             stmt.setString(3, autor);
             stmt.setInt(4, album);
             
-            stmt.executeUpdate();  // Añade el usuario.
+            stmt.executeUpdate();
             stmt.close();
         }
         catch (SQLException ex){
@@ -76,7 +76,7 @@ public class Conexion {
         }
     }
     
-    public void addAlbum(int id, String titulo, String autor, String fecha){  // Añade Albunes.
+    public void addAlbum(int id, String titulo, String autor, String fecha){  // añade Albunes.
         String query = "INSERT INTO album(id,titulo,autor,fecha_lanzamiento) VALUES (?, ?, ?, ?);";
         
         try{
@@ -86,7 +86,7 @@ public class Conexion {
             stmt.setString(3, autor);
             stmt.setString(4, fecha);
             
-            stmt.executeUpdate();  // Añade el usuario.
+            stmt.executeUpdate();
             stmt.close();
         }
         catch (SQLException ex){
@@ -94,19 +94,19 @@ public class Conexion {
         }
     }
     
-    public void updateAlbum(int row, int col, String value, String column){
+    public void updateAlbum(int row, int col, String value, String column){ // actualiza los valores de Album
          String query = "UPDATE album SET(? = ?)";
         
         try{
             PreparedStatement stmt = con.prepareStatement(query);
-            switch(col){
+            switch(col){ // segun el numero de la columna hace una cosa u otra
                 case 0:  stmt.setString(1, column); stmt.setInt(2, Integer.parseInt(value)); break;
                 case 1:  stmt.setString(1, column); stmt.setString(2, value); break;
                 case 2:  stmt.setString(1, column); stmt.setString(2, value); break;
                 case 3:  stmt.setString(1, column); stmt.setString(2, value); break;
             }        
             
-            stmt.executeUpdate();  // Añade el usuario.
+            stmt.executeUpdate();
             stmt.close();
         }
         catch (SQLException ex){
@@ -114,7 +114,7 @@ public class Conexion {
         }
     }
     
-    public void tableSong (JTable table){
+    public void tableSong (JTable table){ // selecciono todo de la tabla para poner en la UI
         String query = "SELECT * FROM cancion;";
         
         try{
@@ -123,7 +123,7 @@ public class Conexion {
             ResultSet rs = stmt.executeQuery(query);
             
             while (rs.next()) {
-                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                DefaultTableModel model = (DefaultTableModel) table.getModel(); // añade filas a la tabla automaticamente
                 model.addRow(new Object[]{rs.getInt("id"), rs.getString("titulo"), rs.getString("autor"), rs.getInt("album")});                
             }
         }
