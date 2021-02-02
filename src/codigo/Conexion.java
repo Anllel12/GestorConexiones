@@ -6,7 +6,6 @@
 package codigo;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -184,7 +183,7 @@ public class Conexion {
         }        
     }
     
-     public void tableAlbum (JTable table){
+    public void tableAlbum (JTable table){
         String query = "SELECT * FROM album;";
         
         try{

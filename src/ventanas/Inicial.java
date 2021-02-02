@@ -6,7 +6,6 @@
 package ventanas;
 
 import codigo.Conexion;
-import java.sql.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
