@@ -94,17 +94,66 @@ public class Conexion {
         }
     }
     
-    public void updateAlbum(int row, int col, String value, String column){ // actualiza los valores de Album
-         String query = "UPDATE album SET(? = ?)";
+    public void updateAlbum(int col, String value, int id){ // actualiza los valores de Album
+        String query = "UPDATE album SET(? = ?)";
+        
+        System.out.println(String.format("UPDATE album SET titulo = %s WHERE id = %s", value, id));
+        try{
+            Statement stmt = con.createStatement();
+            switch(col){ // segun el numero de la columna hace una cosa u otra              
+                case 1: query = String.format("UPDATE album SET titulo = '%s' WHERE id = %s", value, id); break;
+                case 2: query = String.format("UPDATE album SET autor = '%s' WHERE id = %s", value, id); break;
+                case 3: query = String.format("UPDATE album SET fecha_lanzamiento = '%s' WHERE id = %s", value, id); break;
+            }        
+            
+            stmt.executeUpdate(query);
+            stmt.close();
+        }
+        catch (SQLException ex){
+            System.out.println(ex.toString());
+        }
+    }
+    
+    public void updateSong(int col, String value, int album, int id){ // actualiza los valores de Album
+        String query = "UPDATE album SET(? = ?)";
+        
+        try{
+            Statement stmt = con.createStatement();
+            switch(col){ // segun el numero de la columna hace una cosa u otra
+                case 1: query = String.format("UPDATE cancion SET titulo = '%s' WHERE id = %s", value, id); break;
+                case 2: query = String.format("UPDATE cancion SET autor = '%s' WHERE id = %s", value, id); break;
+                case 3: query = String.format("UPDATE cancion SET album = %s WHERE id = %s", album, id); break;
+            }        
+            
+            stmt.executeUpdate(query);
+            stmt.close();
+        }
+        catch (SQLException ex){
+            System.out.println(ex.toString());
+        }
+    }
+    
+    public void deleteAlbum(int id){ // actualiza los valores de Album
+        String query = "DELETE FROM album WHERE id = ?";
         
         try{
             PreparedStatement stmt = con.prepareStatement(query);
-            switch(col){ // segun el numero de la columna hace una cosa u otra
-                case 0:  stmt.setString(1, column); stmt.setInt(2, Integer.parseInt(value)); break;
-                case 1:  stmt.setString(1, column); stmt.setString(2, value); break;
-                case 2:  stmt.setString(1, column); stmt.setString(2, value); break;
-                case 3:  stmt.setString(1, column); stmt.setString(2, value); break;
-            }        
+            stmt.setInt(1, id);
+            
+            stmt.executeUpdate();
+            stmt.close();
+        }
+        catch (SQLException ex){
+            System.out.println(ex.toString());
+        }
+    }
+    
+    public void deleteSong(int id){ // elimino los valores de Cancion
+        String query = "DELETE FROM cancion WHERE id = ?";
+        
+        try{
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setInt(1, id);
             
             stmt.executeUpdate();
             stmt.close();
@@ -126,6 +175,9 @@ public class Conexion {
                 DefaultTableModel model = (DefaultTableModel) table.getModel(); // añade filas a la tabla automaticamente
                 model.addRow(new Object[]{rs.getInt("id"), rs.getString("titulo"), rs.getString("autor"), rs.getInt("album")});                
             }
+            
+            rs.close();
+            stmt.close();
         }
         catch(SQLException ex){
             System.out.println(ex.toString());
@@ -145,6 +197,9 @@ public class Conexion {
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
                 model.addRow(new Object[]{rs.getInt("id"), rs.getString("titulo"), rs.getString("autor"), rs.getString("fecha_lanzamiento")});                
             }
+            
+            rs.close();
+            stmt.close();
         }
         catch(SQLException ex){
             System.out.println(ex.toString());
