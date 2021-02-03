@@ -30,10 +30,9 @@ public class Conexion {
             BBDD.con.close();
             System.out.println("Desconectado a la Base de Datos");
             
-            //return true;
         } catch (SQLException ex) {
             System.out.println(ex.toString());
-            //return false;
+
         }
     }
     
@@ -97,7 +96,7 @@ public class Conexion {
         }
     }
     
-    public void updateSong(int col, String value, int album, int id){ // actualiza los valores de Album
+    public void updateSong(int col, String value, int album, int id){ // actualiza los valores de Cancion
         String query = "UPDATE album SET(? = ?)";
         
         try{
@@ -116,7 +115,7 @@ public class Conexion {
         }
     }
     
-    public void deleteAlbum(int id){ // actualiza los valores de Album
+    public void deleteAlbum(int id){ // elimina los valores de Album
         String query = "DELETE FROM album WHERE id = ?";
         
         try{
@@ -167,7 +166,7 @@ public class Conexion {
         }        
     }
     
-    public void tableAlbum (JTable table){
+    public void tableAlbum (JTable table){ // selecciono todo de la tabla para poner en la UI
         String query = "SELECT * FROM album;";
         
         try{
@@ -177,7 +176,7 @@ public class Conexion {
             
             while (rs.next()) {
                 
-                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                DefaultTableModel model = (DefaultTableModel) table.getModel(); // añade filas a la tabla automaticamente
                 model.addRow(new Object[]{rs.getInt("id"), rs.getString("titulo"), rs.getString("autor"), rs.getString("fecha_lanzamiento")});                
             }
             
@@ -189,10 +188,10 @@ public class Conexion {
         }        
     }
     
-    public String findAlbum (int column, String value){
+    public String findAlbum (int column, String value){ // busca los valores que le dices
         String text = "";
         String query = "";
-        switch(column){
+        switch(column){ // segun lo elegido en el comboBox entra en un lado o en otro
             case 0: query = "SELECT * FROM album WHERE id = ?;"; break;
             case 1: query = "SELECT * FROM album WHERE titulo = ?;"; break;
             case 2: query = "SELECT * FROM album WHERE autor = ?;"; break;
@@ -205,7 +204,7 @@ public class Conexion {
             
             ResultSet rs = stmt.executeQuery();
             
-            while (rs.next()) {
+            while (rs.next()) { // lo pongo en un Jtext
                 text += String.format("Id: %s \nTitulo: %s\n Autor: %s\n Fecha Lanzamiento: %s", rs.getInt("id"), rs.getString("titulo"), rs.getString("autor"), rs.getString("fecha_lanzamiento"));
             }
             
@@ -219,10 +218,10 @@ public class Conexion {
         return text;
     }
     
-    public String findSong (int column, String value){
+    public String findSong (int column, String value){ // busca los valores que le dices
         String text = "";
         String query = "";
-        switch(column){
+        switch(column){ // segun lo elegido en el comboBox entra en un lado o en otro
             case 0: query = "SELECT * FROM cancion WHERE id = ?;"; break;
             case 1: query = "SELECT * FROM cancion WHERE titulo = ?;"; break;
             case 2: query = "SELECT * FROM cancion WHERE autor = ?;"; break;
@@ -235,7 +234,7 @@ public class Conexion {
             
             ResultSet rs = stmt.executeQuery();
             
-            while (rs.next()) {
+            while (rs.next()) { // lo pongo en un Jtext
                 text += String.format("Id: %s \nTitulo: %s\nAutor: %s\nAlbum: %s\n\n", rs.getInt("id"), rs.getString("titulo"), rs.getString("autor"), rs.getString("album"));
             }
             

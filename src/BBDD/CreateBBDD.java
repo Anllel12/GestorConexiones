@@ -22,7 +22,7 @@ public class CreateBBDD {
     
     public static Connection con = null;
     
-    public static void create(String name){
+    public static void create(String name){ // me conecto a la base de datos 
         
         String user= "root";
         String pass = "";
@@ -30,9 +30,9 @@ public class CreateBBDD {
         try {          
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/?serverTimezone=UTC", user, pass);  // Creamos la Base de Datos.
             
-            dataBase(name);
+            dataBase(name); // creao la besa
             
-            createTables();
+            createTables(); // creo las tablas
            
         } catch (SQLException ex) {
             Logger.getLogger(CreateBBDD.class.getName()).log(Level.SEVERE, null, ex);
@@ -40,7 +40,7 @@ public class CreateBBDD {
         
     }
     
-    private static void dataBase(String name) throws SQLException {
+    private static void dataBase(String name) throws SQLException { // creo la BBDD
         Statement stmt = con.createStatement();
             
         String data = String.format("CREATE DATABASE IF NOT EXISTS %s;", name);           
@@ -58,7 +58,7 @@ public class CreateBBDD {
         insertTables();
     }
     
-    private static void insertTables() throws SQLException {  // Esto contiene toda la creación de tablas.
+    private static void insertTables() throws SQLException {  // Esto contiene toda la insercion de valores en la tablas.
         insertAlbumTable();
         insertSongTable();
     }
@@ -91,7 +91,7 @@ public class CreateBBDD {
         stmt.close();
     }
     
-    private static void insertAlbumTable() throws SQLException {  // Creamos la tabla Canciones.
+    private static void insertAlbumTable() throws SQLException {  // insertamos valores a la tabla Album.
         Statement stmt = con.createStatement();
 
         String albumTable = "INSERT IGNORE INTO `album` VALUES \n" +
@@ -101,7 +101,7 @@ public class CreateBBDD {
         stmt.close();
     }
     
-    private static void insertSongTable() throws SQLException {  // Creamos la tabla Canciones.
+    private static void insertSongTable() throws SQLException {  // insertamos valores a la tabla Cancion.
         Statement stmt = con.createStatement();
 
         String songTable = "INSERT IGNORE INTO `cancion` VALUES \n" +

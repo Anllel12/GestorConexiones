@@ -38,7 +38,7 @@ public class Inicial extends javax.swing.JFrame {
      */
     public Inicial(){
         initComponents();
-        BBDD.create("discografica");
+        BBDD.create("discografica"); // creo la Base de Datos
         conexion.tableSong(jTableCanciones); // pongo los valores de la BBDD en las tablas
         conexion.tableAlbum(jTableAlbunes);
     }
@@ -268,7 +268,7 @@ public class Inicial extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        conexion.desconectar();
+        conexion.desconectar(); // desconecta al cerrar la ventana
         this.dispose();
         Runtime.getRuntime().halt(0);
     }//GEN-LAST:event_formWindowClosed
@@ -278,7 +278,7 @@ public class Inicial extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonBucarCancionActionPerformed
 
     private void jButtonActualizarCancionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizarCancionActionPerformed
-        if(jTableCanciones.isEditing()){
+        if(jTableCanciones.isEditing()){ // comprueba si esta editando la tabla
             JOptionPane.showMessageDialog(null, "Deje de editar el campo (Pulse ENTER para dejar de editar).", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
         else{
@@ -319,7 +319,7 @@ public class Inicial extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonEliminarAlbumActionPerformed
 
     private void jButtonActualizarAlbumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizarAlbumActionPerformed
-        if(jTableAlbunes.isEditing()){
+        if(jTableAlbunes.isEditing()){ // comprueba que su estas editando la tabla
             JOptionPane.showMessageDialog(null, "Deje de editar el campo (Pulse ENTER para dejar de editar).", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
         else{
@@ -355,7 +355,7 @@ public class Inicial extends javax.swing.JFrame {
     }
 
     public void updateTableSong(){
-        while(jTableCanciones.getRowCount() != 0) ((DefaultTableModel)jTableCanciones.getModel()).removeRow(0);
+        while(jTableCanciones.getRowCount() != 0) ((DefaultTableModel)jTableCanciones.getModel()).removeRow(0); // consigue el total de columnas y las elimina
         
         conexion.tableSong(jTableCanciones);
     }
