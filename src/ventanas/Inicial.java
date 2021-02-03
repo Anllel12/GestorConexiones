@@ -5,7 +5,9 @@
  */
 package ventanas;
 
+import BBDD.CreateBBDD;
 import codigo.Conexion;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -18,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 public class Inicial extends javax.swing.JFrame {
     
     Conexion conexion = new Conexion();
+    CreateBBDD BBDD = new CreateBBDD();
     
     int row = 0; // fila pinchada con el raton
     int col = 0; // columna pinchada con el raton
@@ -29,8 +32,9 @@ public class Inicial extends javax.swing.JFrame {
     /*
      * Creates new form Inicial
      */
-    public Inicial() {
+    public Inicial(){
         initComponents();
+        BBDD.create("discografica");
         conexion.conectar();
         conexion.tableSong(jTableCanciones); // pongo los valores de la BBDD en las tablas
         conexion.tableAlbum(jTableAlbunes);
@@ -70,6 +74,11 @@ public class Inicial extends javax.swing.JFrame {
         jButtonActualizarCancion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jInternalFrame1.setVisible(true);
 
@@ -385,6 +394,12 @@ public class Inicial extends javax.swing.JFrame {
         
         updateTableSong(); // actualizo los valores de la tabla
     }//GEN-LAST:event_jButtonEliminarCancionActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        conexion.desconectar();
+        this.dispose();
+        Runtime.getRuntime().halt(0);
+    }//GEN-LAST:event_formWindowClosed
 
     public void updateTableAlbum(){ // actualizo la tabla
         while(jTableAlbunes.getRowCount() != 0) ((DefaultTableModel)jTableAlbunes.getModel()).removeRow(0); // consigue el total de columnas y las elimina
