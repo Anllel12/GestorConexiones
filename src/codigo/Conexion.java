@@ -5,6 +5,7 @@
  */
 package codigo;
 
+import BBDD.CreateBBDD;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -22,28 +23,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Conexion {
     
-    Connection con;  
-
-    public void conectar() {
-
-        String urlBBDD = "jdbc:mysql://localhost:3306/discografica?serverTimezone=UTC";
-        String user= "root";
-        String pass = "";
-
-        try {
-            con = DriverManager.getConnection(urlBBDD, user, pass);
-            if (con != null) {
-                System.out.println("Conectado a la Base de Datos");
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
+    CreateBBDD BBDD = new CreateBBDD();
+    
     public void desconectar() {
         try {
-            con.close();
+            BBDD.con.close();
             System.out.println("Desconectado a la Base de Datos");
             
             //return true;
@@ -61,7 +45,7 @@ public class Conexion {
         System.out.println(album);
         
         try{
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = BBDD.con.prepareStatement(query);
             stmt.setInt(1, id);
             stmt.setString(2, titulo);
             stmt.setString(3, autor);
@@ -79,7 +63,7 @@ public class Conexion {
         String query = "INSERT INTO album(id,titulo,autor,fecha_lanzamiento) VALUES (?, ?, ?, ?);";
         
         try{
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = BBDD.con.prepareStatement(query);
             stmt.setInt(1, id);
             stmt.setString(2, titulo);
             stmt.setString(3, autor);
@@ -98,7 +82,7 @@ public class Conexion {
         
         System.out.println(String.format("UPDATE album SET titulo = %s WHERE id = %s", value, id));
         try{
-            Statement stmt = con.createStatement();
+            Statement stmt = BBDD.con.createStatement();
             switch(col){ // segun el numero de la columna hace una cosa u otra              
                 case 1: query = String.format("UPDATE album SET titulo = '%s' WHERE id = %s", value, id); break;
                 case 2: query = String.format("UPDATE album SET autor = '%s' WHERE id = %s", value, id); break;
@@ -117,7 +101,7 @@ public class Conexion {
         String query = "UPDATE album SET(? = ?)";
         
         try{
-            Statement stmt = con.createStatement();
+            Statement stmt = BBDD.con.createStatement();
             switch(col){ // segun el numero de la columna hace una cosa u otra
                 case 1: query = String.format("UPDATE cancion SET titulo = '%s' WHERE id = %s", value, id); break;
                 case 2: query = String.format("UPDATE cancion SET autor = '%s' WHERE id = %s", value, id); break;
@@ -136,7 +120,7 @@ public class Conexion {
         String query = "DELETE FROM album WHERE id = ?";
         
         try{
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = BBDD.con.prepareStatement(query);
             stmt.setInt(1, id);
             
             stmt.executeUpdate();
@@ -151,7 +135,7 @@ public class Conexion {
         String query = "DELETE FROM cancion WHERE id = ?";
         
         try{
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = BBDD.con.prepareStatement(query);
             stmt.setInt(1, id);
             
             stmt.executeUpdate();
@@ -166,7 +150,7 @@ public class Conexion {
         String query = "SELECT * FROM cancion;";
         
         try{
-            Statement stmt = con.createStatement();
+            Statement stmt = BBDD.con.createStatement();
             
             ResultSet rs = stmt.executeQuery(query);
             
@@ -187,7 +171,7 @@ public class Conexion {
         String query = "SELECT * FROM album;";
         
         try{
-            Statement stmt = con.createStatement();
+            Statement stmt = BBDD.con.createStatement();
             
             ResultSet rs = stmt.executeQuery(query);
             
@@ -203,5 +187,65 @@ public class Conexion {
         catch(SQLException ex){
             System.out.println(ex.toString());
         }        
+    }
+    
+    public String findAlbum (int column, String value){
+        String text = "";
+        String query = "";
+        switch(column){
+            case 0: query = "SELECT * FROM album WHERE id = ?;"; break;
+            case 1: query = "SELECT * FROM album WHERE titulo = ?;"; break;
+            case 2: query = "SELECT * FROM album WHERE autor = ?;"; break;
+            case 3: query = "SELECT * FROM album WHERE fecha_lanzamiento = ?;"; break;
+        }
+
+        try{
+            PreparedStatement stmt = BBDD.con.prepareStatement(query);
+            stmt.setString(1, value);
+            
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                text += String.format("Id: %s \nTitulo: %s\n Autor: %s\n Fecha Lanzamiento: %s", rs.getInt("id"), rs.getString("titulo"), rs.getString("autor"), rs.getString("fecha_lanzamiento"));
+            }
+            
+            rs.close();
+            stmt.close();          
+        }
+        catch (Exception ex){
+            System.out.println(ex);
+        } 
+        
+        return text;
+    }
+    
+    public String findSong (int column, String value){
+        String text = "";
+        String query = "";
+        switch(column){
+            case 0: query = "SELECT * FROM cancion WHERE id = ?;"; break;
+            case 1: query = "SELECT * FROM cancion WHERE titulo = ?;"; break;
+            case 2: query = "SELECT * FROM cancion WHERE autor = ?;"; break;
+            case 3: query = "SELECT * FROM cancion WHERE album = ?;"; break;
+        }
+        
+        try{
+            PreparedStatement stmt = BBDD.con.prepareStatement(query);
+            stmt.setString(1, value);
+            
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                text += String.format("Id: %s \nTitulo: %s\nAutor: %s\nAlbum: %s\n\n", rs.getInt("id"), rs.getString("titulo"), rs.getString("autor"), rs.getString("album"));
+            }
+            
+            rs.close();
+            stmt.close();          
+        }
+        catch (Exception ex){
+            System.out.println(ex);
+        } 
+        
+        return text;
     }
 }

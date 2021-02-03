@@ -32,10 +32,6 @@ public class CreateBBDD {
             
             dataBase(name);
             
-            assert con != null;
-            
-            con.setAutoCommit(false);
-            
             createTables();
            
         } catch (SQLException ex) {
@@ -79,7 +75,6 @@ public class CreateBBDD {
         
         stmt.executeUpdate(albumTable);
         stmt.close();
-        con.commit();
     }
     
     private static void createSongTable() throws SQLException {  // Creamos la tabla Canciones.
@@ -94,7 +89,6 @@ public class CreateBBDD {
         
         stmt.executeUpdate(songTable);
         stmt.close();
-        con.commit();
     }
     
     private static void insertAlbumTable() throws SQLException {  // Creamos la tabla Canciones.
@@ -105,7 +99,6 @@ public class CreateBBDD {
         
         stmt.executeUpdate(albumTable);
         stmt.close();
-        con.commit();
     }
     
     private static void insertSongTable() throws SQLException {  // Creamos la tabla Canciones.
@@ -117,6 +110,5 @@ public class CreateBBDD {
         
         stmt.executeUpdate(songTable);
         stmt.close();
-        con.commit();
     }
 }
